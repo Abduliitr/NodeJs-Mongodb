@@ -23,7 +23,7 @@ dishRouter.route('/')
         next(err);
     });
 })
-.post(authenticate.verifyUser, (req, res, next)=>{
+.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     // res.end('Will add the dish: '+req.body.name+' with details: '+req.body.description); 
     Dishes.create(req.body)
     .then((dish)=>{
@@ -34,11 +34,11 @@ dishRouter.route('/')
     }, (err)=> next(err))
     .catch((err)=> next(err));
 })
-.put(authenticate.verifyUser, (req, res, next)=>{
+.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     res.statusCode = 403;
     res.end('PUT operation not supported on /dishes'); 
 })
-.delete(authenticate.verifyUser, (req, res, next)=>{
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     // res.end('Deleting all the dishes...'); 
     Dishes.remove({})
     .then((resp)=>{
@@ -64,10 +64,10 @@ dishRouter.route('/:dishId')
         next(err);
     });
 })
-.post(authenticate.verifyUser, (req, res, next)=>{
+.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     res.end('POST operation  not supported on /dishes/' + req.params.dishId); 
 })
-.put(authenticate.verifyUser, (req, res, next)=>{
+.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     // res.write('Updating the dish: '+req.params.dishId+'\n');
     // res.end('Will update the dish: '+req.body.name+' with details: '+req.body.description);
     Dishes.findByIdAndUpdate(req.params.dishId, {
@@ -82,7 +82,7 @@ dishRouter.route('/:dishId')
         next(err);
     });
 })
-.delete(authenticate.verifyUser, (req, res, next)=>{
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     // res.end('Deleting dish: '+req.params.dishId); 
     Dishes.findByIdAndRemove(req.params.dishId)
     .then((resp)=>{
@@ -145,7 +145,7 @@ dishRouter.route('/:dishId/comments')
     res.statusCode = 403;
     res.end('PUT operation not supported on /dishes/'+req.params.dishId); 
 })
-.delete(authenticate.verifyUser, (req, res, next)=>{
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next)=>{
     // res.end('Deleting all the dishes...'); 
     Dishes.findById(req.params.dishId)
     .then((dish)=>{
@@ -203,7 +203,7 @@ dishRouter.route('/:dishId/comments/:commentId')
     res.end('POST operation  not supported on /dishes/' + req.params.dishId
         +'/comments/'+req.params.commentId); 
 })
-.put(authenticate.verifyUser, (req, res, next)=>{
+.put(authenticate.verifyUser, authenticate.verifySelf, (req, res, next)=>{
     // res.write('Updating the dish: '+req.params.dishId+'\n');
     // res.end('Will update the dish: '+req.body.name+' with details: '+req.body.description);
     // Dishes.findByIdAndUpdate(req.params.dishId, {
@@ -252,7 +252,7 @@ dishRouter.route('/:dishId/comments/:commentId')
         next(err);
     });
 })
-.delete(authenticate.verifyUser, (req, res, next)=>{
+.delete(authenticate.verifyUser, authenticate.verifySelf, (req, res, next)=>{
     // res.end('Deleting dish: '+req.params.dishId); 
     Dishes.findById(req.params.dishId)
     .then((dish)=>{

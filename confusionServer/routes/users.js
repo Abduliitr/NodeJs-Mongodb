@@ -9,8 +9,14 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+  User.find({})
+  .then((users) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.json(users);
+  }, (err) => next(err))
+  .catch((err) => next(err));
 });
 
 router.post('/signup', (req, res, next) => {
@@ -65,7 +71,3 @@ router.get('/logout', (req, res)=>{
 });
 
 module.exports = router;
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWQzY2ExYTBhODc1ZDEzMzI1NGU4YzUiLCJpYXQiOjE1OTA5MzgxODEsImV4cCI6MTU5MDk0MTc4MX0.kdTSzKwSJmVoOekyBPRSe-hwDu8PnqHXf04YjtmQdp0 
-
-// 5ed3cafe0a875d133254e8c7
