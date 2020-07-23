@@ -15,6 +15,7 @@ var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var uploadRouter = require('./routes/uploadRouter');
+var favoriteRouter = require('./routes/favoriteRouter');
 
 const mongoose = require('mongoose');
 
@@ -59,6 +60,7 @@ app.use('/dishes', dishRouter);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
 app.use('/imageUpload', uploadRouter);
+app.use('/favorites', favoriteRouter);
 
 
 // catch 404 and forward to error handler
@@ -80,3 +82,5 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 //COMMAND TO RUN MONGODB FROM MOGODB FOLDER: mongod --dbpath=data --bind_ip 127.0.0.1
+
+//  AppID: 253972869352950 ; App Secret: 37f75bc7e195d0160232b06af2cb75d2
